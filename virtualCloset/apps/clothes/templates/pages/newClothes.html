@@ -1,0 +1,98 @@
+{% extends "layouts/base.html" %}
+<!---->
+{% block title %}Nueva prenda{% endblock %}
+<!---->
+{%block content %} {% load static %}
+<div class="container-fluid mt-3">
+  <div class="row text-center">
+    <p class="text-warning h1 fw-semibold">Registrar nueva prenda</p>
+  </div>
+  <div class="row text-center">
+    <p class="text-dark">En el siguiente formulario podrás registrar tus prendas de ropa</p>
+  </div>
+  <div class="container w-75">
+    <form action="{% url 'newClothes' %}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="row justify-content-md d-flex justify-content-center mb-3">
+        <div class=" col-md-7 col-lg-7 text-center">
+          <div class="d-flex justify-content-center">
+            <img src="" alt="vista previa" id="preview" class="img-thumbnail w-50" style="display: none;">
+          </div>
+          <label for="image" class="form-label">Sube la foto de tu prenda:</label>
+          <input type="file" name="image" id="image" class="form-control">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-7 col-lg-7 mb-3">
+          <div class="form-floating">
+            <input type="text" name="color" id="floatingInput" class="form-control" placeholder="Rojo">
+            <label for="floatingInput" class="form-label">Digita el color de la prenda:</label>
+          </div>
+        </div>
+        <div class="col-md-5 col-lg-5 mb-3">
+          <div class="form-floating">
+            <select name="kind" id="floatingSelect" class="form-select" aria-label="Floating label select example">
+              <option selected></option>
+              {% for clothes in kind %}
+              <option value="{{clothes.ID_KIND}}">{{clothes.NAME_KIND_CLOTHES}}</option>
+              {% endfor %}
+            </select>
+            <label for="floatingInput" class="form-label">Selecciona el tipo de prenda:</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-7 col-lg-7 mb-3">
+          <div class="form-floating">
+            <input type="text" name="brand" id="floatingInput" class="form-control form-control-sm" placeholder="Rojo">
+            <label for="floatingInput" class="form-label">Digita la marca de la prenda:</label>
+          </div>
+        </div>
+        <div class="col-md-5 col-lg-5 mb-3">
+          <div class="form-floating">
+            <select name="season" id="floatingSelect" class="form-select" aria-label="Floating label select example">
+              <option selected></option>
+              {% for item in season %}
+              <option value="{{item.ID_SEASON}}">{{item.NAME_SEASON}}</option>
+              {% endfor %}
+            </select>
+            <label for="floatingInput" class="form-label">selecciona la temporada de la prenda:</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 col-lg-12 mb-3">
+          <div class="form-floating">
+            <input type="text" name="material" id="floatingInput" class="form-control" placeholder="algodon">
+            <label for="floatingInput" class="form-label">Digita el material de la prenda:</label>
+          </div>
+        </div>
+      </div>
+      <div class="row d-flex justify-content-center">
+        <div class="col-auto">
+          <button type="submit" class="btn btn-success btn-lg mb-3">Registrar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+      // Obtener el elemento input y el elemento de imagen
+      const fileInput = document.getElementById('image');
+    const previewImage = document.getElementById('preview');
+
+    // Evento que se dispara cuando el usuario selecciona un archivo
+    fileInput.addEventListener('change', function() {
+        const file = fileInput.files[0];  // Obtener el archivo seleccionado
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImage.src = e.target.result;  // Establecer la fuente de la imagen de vista previa
+                previewImage.style.display = 'block';  // Mostrar la imagen de vista previa
+            };
+            reader.readAsDataURL(file);  // Leer el archivo como una URL de datos
+        }
+    });
+</script>
+{% endblock %}

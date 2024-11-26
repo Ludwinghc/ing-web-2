@@ -1,0 +1,50 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Ver Conjuntos{% endblock %}
+
+{% block content %}
+{% load static %}
+<div class="container-fluid">
+  <div class="row text-center">
+    <p class="text-warning h1 fw-semibold">Calendario de Outfits</p>
+  </div>
+  <div class="container mt-4">
+    <div class="row justify-content-md d-flex justify-content-center mb-3">
+      <div class="col-md-6">
+        <div id="calendar" clas></div>
+      </div>
+    </div>
+  </div>
+  <!-- Cargar jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- Cargar Moment.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <!-- FullCalendar JS -->
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@3.2.0/dist/fullcalendar.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $('#calendar').fullCalendar({
+        events: [
+          {% for outfit in outfits %}
+                  {
+          title: '{{ outfit.NAME_OUTFIT }}',
+          start: '{{ outfit.DATE_SCHEDULED|date:"Y-m-d" }}',
+          description: '{{ outfit.NAME_OUTFIT }}',
+                      {% if outfit.clothes_param.all %}
+                          image: '{{ outfit.clothes_param.first.IMAGE_CLOTHES.url }}',
+      {% else %}
+      image: '',  // Si no hay ropa, no se asigna imagen
+      {% endif %}
+                  },
+      {% endfor %}
+          ],
+      eventClick: function (event) {
+        alert('Conjunto: ' + event.title );
+        window.location.href = '{% url "verOutfit" %}';
+      },
+      });
+  });
+  </script>
+</div>
+{% endblock %}

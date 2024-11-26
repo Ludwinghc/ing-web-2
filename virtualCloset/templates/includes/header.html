@@ -1,0 +1,39 @@
+{%load static%}
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-semibold" href="{% url 'home' %}">Virtual Closet <i class="bi bi-house-fill text-warning"></i></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Prendas <i class="bi bi-watch text-warning"></i>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'newClothes' %}">Registrar nueva prenda <i class="bi bi-patch-plus-fill text-warning"></i></a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{% url 'verClothes' %}">Ver mis prendas  <i class="bi bi-eye-fill text-warning"> </i></a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Conjuntos <i class="bi bi-archive-fill text-warning"></i>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'newOutfit' %}">Registrar nuevo conjunto <i class="bi bi-patch-plus-fill text-warning"> </i></a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{% url 'verOutfit' %}">Ver mis conjuntos  <i class="bi bi-eye-fill text-warning"> </i></a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'calendarOutfit' %}">Calendario <i class="bi bi-calendar-fill text-warning"></i></a>
+        </li>
+      </ul>
+      <span class="navbar-text">
+        <a class="nav-link text-dark fw-semibold" href="#">Salir <i class="bi bi-door-open-fill text-warning"> </i></a>
+      </span>
+    </div>
+  </div>
+</nav>
