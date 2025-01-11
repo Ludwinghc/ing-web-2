@@ -1,0 +1,145 @@
+{% extends "layouts/base.html" %}
+<!---->
+{% block title %}Nuevo Conjunto{% endblock %}
+<!---->
+{%block content %} {% load static %}
+<div class="container-fluid m-3">
+  <div class="row text-center">
+    <p class="text-warning h1 fw-semibold">Registrar nuevo conjunto</p>
+  </div>
+  <div class="row text-center">
+    <p class="text-dark">En el siguiente formulario podrás registrar tu conjunto de ropa</p>
+  </div>
+  <div class="container w-75">
+      <!-- Filtros -->
+    <div>
+      <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+          <a class="navbar-brand">Filtros</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <form action="" method="get" class="d-flex flex-column flex-lg-row">
+              <div class="input-group mb-2 mb-lg-0 me-lg-2">
+                <input type="text" class="form-control" name="color_filter" placeholder="Filtrar por color" value="{{ color_filter }}">
+              </div>
+              <div class="input-group mb-2 mb-lg-0 me-lg-2">
+                <select class="form-control" name="season_filter">
+                  <option value="">Seleccionar Temporada</option>
+                  {% for season in seasons %}
+                    <option value="{{ season.NAME_SEASON }}" {% if season.NAME_SEASON == season_filter %}selected{% endif %}>{{ season.NAME_SEASON }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <button type="submit" class="btn btn-secondary mb-2 mb-lg-0 me-lg-2">Filtrar</button>
+            </form>
+            <form method="get">
+              <button type="submit" name="clear_filters" class="btn btn-secondary mb-2 mb-lg-0 me-lg-2 w-100">Quitar Filtros</button>
+            </form>
+          </div>
+        </div>
+      </nav>
+    </div>
+    <div class="mt-4">
+      <form action="{% url 'newOutfit' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row mb-3">
+  
+          <!-- nombre outfit -->
+          <div class="col-md-4 mb-2">
+            <div class="form-floating">
+              <input type="text" name="name_outfit" id="floatingInput" class="form-control">
+              <label for="floatingInput" class="form-label">Digita el nombre del outfit</label>
+            </div>
+        </div>
+        <!-- Temporada -->
+        <div class="col-md-4 mb-2">
+          <div class=" form-floating">
+            <select name="season" id="floatingSelect" class="form-select" aria-label="Floating label select example">
+              {% for item in season %}
+              <option value="{{item.ID_SEASON}}">{{ item.NAME_SEASON }}</option>
+              {% endfor %}
+            </select>
+            <label for="floatingInput" class="form-label">Selecciona la Temporada:</label>
+          </div>
+        </div>
+        <!-- Fecha programada -->
+        <div class="col-md-4 mb-2">
+          <div class=" form-floating">
+            <input type="date" name="date_scheduled" id="floatingSelect" class="form-control">
+            <label for="floatingInput" class="form-label">Fecha programada:</label>
+          </div>
+        </div>
+      </div>
+        <!-- Prendas -->
+        <div class="accordion accordion-flush" id="accordionFlushExample">
+          {% for kind in kind_name %}
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#flush-collapse{{ forloop.counter }}" aria-expanded="false"
+                aria-controls="flush-collapse{{ forloop.counter }}">
+                {{ kind }}
+              </button>
+            </h2>
+            <div id="flush-collapse{{ forloop.counter }}" class="accordion-collapse collapse"
+              data-bs-parent="#accordionFlushExample">
+              <div class="accordion-body">
+                {% for item in clothes %}
+                {% if item.KIND_CLOTHES_FK.NAME_KIND_CLOTHES == kind %}
+                <div class="d-inline-block me-3 text-center">
+                  {% if item.IMAGE_CLOTHES %}
+                  {% if item.es_extension_valida %}
+                  <img src="{{item.IMAGE_CLOTHES.url}}" alt="." class="rounded float-start table-image">
+                  {% else %}
+                  <img src="{% static 'assets/img-landing/closet.jpg'%}" alt="sin foto" class="w-25 table-image">
+                  {% endif %}
+                  {% else %}
+                  <img src="{% static 'assets/img-landing/closet.jpg'%}" alt="sin foto" class="w-25 table-image">
+                  {% endif %}
+                  <div>
+                    <input type="radio" id="clothes_{{ item.ID_CLOTHES }}" name="clothes_{{kind}}" value="{{ item.ID_CLOTHES }}">
+                    <label for="clothes_{{ item.ID_CLOTHES }}">Seleccionar</label>
+                  </div>
+                </div>
+                {% endif %}
+                {% empty %}
+                <p>No hay prendas disponibles.</p>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <div class="col-auto text-center mt-2">
+          <button type="submit" class="btn btn-success btn-lg mb-3">Registrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<style>
+  .table-image {
+    width: 100px;
+    /* Ancho fijo */
+    height: 100px;
+    /* Alto fijo */
+    object-fit: cover;
+    /* Ajusta el contenido */
+    border-radius: 8px;
+    /* Bordes redondeados */
+  }
+
+  input[type="checkbox"] {
+    margin-top: 5px;
+    /* Espacio entre la imagen y el checkbox */
+  }
+
+  label {
+    cursor: pointer;
+    /* Cambia el cursor al pasar sobre el checkbox */
+  }
+</style>
+
+{% endblock %}
